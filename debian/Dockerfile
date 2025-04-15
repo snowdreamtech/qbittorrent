@@ -10,7 +10,7 @@ RUN wget https://github.com/saltydk/qbt_pw_gen/archive/refs/tags/v${QBT_PW_GEN_V
 
 
 
-FROM snowdreamtech/debian:12.8.0
+FROM snowdreamtech/debian:12.10.0
 
 # OCI annotations to image
 LABEL org.opencontainers.image.authors="Snowdream Tech" \
