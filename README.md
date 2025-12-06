@@ -1,11 +1,11 @@
-# Base
+# qBittorrent
 
-![Docker Image Version](https://img.shields.io/docker/v/snowdreamtech/base)
-![Docker Image Size](https://img.shields.io/docker/image-size/snowdreamtech/base/latest)
-![Docker Pulls](https://img.shields.io/docker/pulls/snowdreamtech/base)
-![Docker Stars](https://img.shields.io/docker/stars/snowdreamtech/base)
+![Docker Image Version](https://img.shields.io/docker/v/snowdreamtech/qbittorrent)
+![Docker Image Size](https://img.shields.io/docker/image-size/snowdreamtech/qbittorrent/latest)
+![Docker Pulls](https://img.shields.io/docker/pulls/snowdreamtech/qbittorrent)
+![Docker Stars](https://img.shields.io/docker/stars/snowdreamtech/qbittorrent)
 
-Docker Image packaging for Base. (amd64, arm32v5,  arm32v6, arm32v7, arm64v8, i386, mips64le, ppc64le,riscv64, s390x)
+Docker Image packaging for qBittorrent. (amd64, arm32v5,  arm32v6, arm32v7, arm64v8, i386, mips64le, ppc64le,riscv64, s390x)
 
 # Usage
 
@@ -17,21 +17,41 @@ To help you get started creating a container from this image you can either use 
 
 ```bash
 docker run -d \
-  --name=base \
-  -e TZ=Asia/Shanghai \
+  --name=qBittorrent \
+  -e TZ=Etc/UTC \
+  -e WEBUI_LANG=en \
+  -e WEBUI_USER=admin \
+  -e WEBUI_PASS=admin \
+  -p 8080:8080 \
+  -p 25413:25413 \
+  -p 25413:25413/udp \
+  -v /path/to/downloads:/var/lib/qBittorrent/downloads  \
+  -v /path/to/incomplete:/var/lib/qBittorrent/incomplete  \
+  -v /path/to/torrents:/var/lib/qBittorrent/torrents  \
   --restart unless-stopped \
-  snowdreamtech/base:latest
+  snowdreamtech/qbittorrent:latest
 ```
 
 ### Advance
 
 ```bash
 docker run -d \
-  --name=base \
-  -e TZ=Asia/Shanghai \
-  -v /path/to/data:/path/to/data \
+  --name=qBittorrent \
+  -e TZ=Etc/UTC \
+  -e WEBUI_LANG=en \
+  -e WEBUI_USER=admin \
+  -e WEBUI_PASS=admin \
+  -e WEBUI_PORT=8080 \
+  -e PEER_PORT=25413 \
+  -p 8080:8080 \
+  -p 25413:25413 \
+  -p 25413:25413/udp \
+  -v /path/to/config:/var/lib/qBittorrent/config \
+  -v /path/to/downloads:/var/lib/qBittorrent/downloads  \
+  -v /path/to/incomplete:/var/lib/qBittorrent/incomplete  \
+  -v /path/to/torrents:/var/lib/qBittorrent/torrents  \
   --restart unless-stopped \
-  snowdreamtech/base:latest
+  snowdreamtech/qbittorrent:latest
 ```
 
 ## Docker Compose
@@ -39,26 +59,53 @@ docker run -d \
 ### Simple
 
 ```bash
+version: "3"
+
 services:
-  base:
-    image: snowdreamtech/base:latest
-    container_name: base
+  qBittorrent:
+    image: snowdreamtech/qbittorrent:latest
+    container_name: qBittorrent
     environment:
-      - TZ=Asia/Shanghai
+      - TZ=Etc/UTC
+      - WEBUI_LANG=en
+      - WEBUI_USER=admin
+      - WEBUI_PASS=admin
+    volumes:
+      - /path/to/downloads:/var/lib/qBittorrent/downloads
+      - /path/to/incomplete:/var/lib/qBittorrent/incomplete
+      - /path/to/torrents:/var/lib/qBittorrent/torrents
+    ports:
+      - 8080:8080
+      - 25413:25413
+      - 25413:25413/udp
     restart: unless-stopped
 ```
 
 ### Advance
 
 ```bash
+version: "3"
+
 services:
-  base:
-    image: snowdreamtech/base:latest
-    container_name: base
+  qBittorrent:
+    image: snowdreamtech/qbittorrent:latest
+    container_name: qBittorrent
     environment:
-      - TZ=Asia/Shanghai
+      - TZ=Etc/UTC
+      - WEBUI_LANG=en
+      - WEBUI_USER=admin
+      - WEBUI_PASS=admin
+      - WEBUI_PORT=8080
+      - PEER_PORT=25413
     volumes:
-      - /path/to/data:/path/to/data
+      - /path/to/config:/var/lib/qBittorrent/config #optional
+      - /path/to/downloads:/var/lib/qBittorrent/downloads
+      - /path/to/incomplete:/var/lib/qBittorrent/incomplete
+      - /path/to/torrents:/var/lib/qBittorrent/torrents
+    ports:
+      - 8080:8080
+      - 25413:25413
+      - 25413:25413/udp
     restart: unless-stopped
 ```
 
@@ -66,7 +113,7 @@ services:
 
 ```bash
 docker buildx create --use --name build --node build --driver-opt network=host
-docker buildx build -t snowdreamtech/base --platform=linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/riscv64,linux/s390x . --push
+docker buildx build -t snowdreamtech/qbittorrent --platform=linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/riscv64,linux/s390x . --push
 ```
 
 ## Reference
@@ -78,7 +125,7 @@ docker buildx build -t snowdreamtech/base --platform=linux/386,linux/amd64,linux
 1. [Faster Multi-Platform Builds: Dockerfile Cross-Compilation Guide](https://www.docker.com/blog/faster-multi-platform-builds-dockerfile-cross-compilation-guide/)
 1. [docker/buildx](https://github.com/docker/buildx)
 
-## Contact (备注：base)
+## Contact (备注：qbittorrent)
 
 * Email: sn0wdr1am@qq.com
 * QQ: 3217680847
