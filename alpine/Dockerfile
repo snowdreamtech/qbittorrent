@@ -9,7 +9,7 @@ RUN wget https://github.com/saltydk/qbt_pw_gen/archive/refs/tags/v${QBT_PW_GEN_V
     && cp passwd ../
 
 
-FROM snowdreamtech/alpine:3.22.2
+FROM snowdreamtech/nodejs:22.16.0-alpine3.22
 
 # OCI annotations to image
 LABEL org.opencontainers.image.authors="Snowdream Tech" \
@@ -66,6 +66,9 @@ ENV QBITTORRENT_VERSION=5.1.0-r0 \
     WEBUI_PASS="" \
     WEBUI_LANG="en" 
 
+ENV FLOOD_AUTH=none \
+    FLOOD_PORT=3000 
+
 # Create a user with PUID and PGID
 RUN if [ "${USER}" != "root" ] && [ ! -d "/home/${USER}" ] && [ "${PUID}" -ne 0 ] && [ "${PGID}" -ne 0 ]; then \
     addgroup -g ${PGID} ${USER}; \
@@ -85,6 +88,8 @@ RUN apk add --no-cache \
     && mkdir -p /var/lib/qBittorrent/torrents/ \
     && rm -rfv /var/lib/qbittorrent
 
+RUN npm install --global flood
+
 # Enable CAP_NET_BIND_SERVICE
 # RUN if [ "${USER}" != "root" ] && [ "${CAP_NET_BIND_SERVICE}" -eq 1 ]; then \
     # setcap 'cap_net_bind_service=+ep' `which nginx`; \
@@ -93,7 +98,7 @@ COPY config /var/lib/qBittorrent/config
 
 COPY --from=builder /root/passwd /var/lib/qBittorrent/bin
 
-EXPOSE 8080 25413/tcp 25413/udp
+EXPOSE  3000 8080 25413/tcp 25413/udp
 
 COPY entrypoint.d /usr/local/bin/entrypoint.d
 
