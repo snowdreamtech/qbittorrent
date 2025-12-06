@@ -1,4 +1,4 @@
-FROM snowdreamtech/golang:1.23.4-alpine3.21 AS builder
+FROM snowdreamtech/golang:1.24.10-alpine3.22 AS builder
 
 ENV QBT_PW_GEN_VERSION=1.0.2
 
@@ -83,8 +83,7 @@ RUN apk add --no-cache \
     && mkdir -p /var/lib/qBittorrent/incomplete/ \
     && mkdir -p /var/lib/qBittorrent/logs/ \
     && mkdir -p /var/lib/qBittorrent/torrents/ \
-    && rm -rfv /var/lib/qbittorrent \
-    && find / -name "*qBittorrent*" -exec chown -Rv ${USER}:${USER} {} \; 
+    && rm -rfv /var/lib/qbittorrent
 
 # Enable CAP_NET_BIND_SERVICE
 # RUN if [ "${USER}" != "root" ] && [ "${CAP_NET_BIND_SERVICE}" -eq 1 ]; then \
@@ -92,7 +91,7 @@ RUN apk add --no-cache \
     # fi
 COPY config /var/lib/qBittorrent/config
 
-COPY --from=builder /home/go/passwd /var/lib/qBittorrent/bin
+COPY --from=builder /root/passwd /var/lib/qBittorrent/bin
 
 EXPOSE 8080 25413/tcp 25413/udp
 
