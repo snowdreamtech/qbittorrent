@@ -1,16 +1,27 @@
+FROM snowdreamtech/golang:1.23.4-alpine3.21 AS builder
+
+ENV QBT_PW_GEN_VERSION=1.0.2
+
+RUN wget https://github.com/saltydk/qbt_pw_gen/archive/refs/tags/v${QBT_PW_GEN_VERSION}.tar.gz \ 
+    && tar zxvf v${QBT_PW_GEN_VERSION}.tar.gz \ 
+    && cd qbt_pw_gen-${QBT_PW_GEN_VERSION} \ 
+    && go build -o passwd \
+    && cp passwd ../
+
+
 FROM snowdreamtech/alpine:3.22.2
 
 # OCI annotations to image
 LABEL org.opencontainers.image.authors="Snowdream Tech" \
-    org.opencontainers.image.title="Base Image Based On Alpine" \
-    org.opencontainers.image.description="Docker Images for Base on Alpine. (i386, amd64, arm32v6, arm32v7, arm64, ppc64le,riscv64, s390x)" \
-    org.opencontainers.image.documentation="https://hub.docker.com/r/snowdreamtech/base" \
-    org.opencontainers.image.base.name="snowdreamtech/base:alpine" \
+    org.opencontainers.image.title="qBittorrent Image Based On Alpine" \
+    org.opencontainers.image.description="Docker Images for qBittorrent on Alpine. (i386, amd64, arm32v6, arm32v7, arm64, ppc64le,riscv64, s390x)" \
+    org.opencontainers.image.documentation="https://hub.docker.com/r/snowdreamtech/qbittorrent" \
+    org.opencontainers.image.base.name="snowdreamtech/qbittorrent:alpine" \
     org.opencontainers.image.licenses="MIT" \
-    org.opencontainers.image.source="https://github.com/snowdreamtech/base" \
+    org.opencontainers.image.source="https://github.com/snowdreamtech/qbittorrent" \
     org.opencontainers.image.vendor="Snowdream Tech" \
-    org.opencontainers.image.version="3.22.2" \
-    org.opencontainers.image.url="https://github.com/snowdreamtech/base"
+    org.opencontainers.image.version="5.0.2" \
+    org.opencontainers.image.url="https://github.com/snowdreamtech/qbittorrent"
     
 # Switch to the user
 USER root
@@ -19,7 +30,7 @@ USER root
 WORKDIR /root
 
 # keep the docker container running
-ARG KEEPALIVE=0 \
+ARG KEEPALIVE=1  \
     # The cap_net_bind_service capability in Linux allows a process to bind a socket to Internet domain privileged ports, 
     # which are port numbers less than 1024. 
     CAP_NET_BIND_SERVICE=0 \
@@ -48,6 +59,13 @@ ENV KEEPALIVE=${KEEPALIVE} \
     USER=${USER} \
     WORKDIR=${WORKDIR} 
 
+ENV QBITTORRENT_VERSION=5.1.0-r0 \
+    PEER_PORT=25413 \
+    WEBUI_PORT=8080 \
+    WEBUI_USER="" \
+    WEBUI_PASS="" \
+    WEBUI_LANG="en" 
+
 # Create a user with PUID and PGID
 RUN if [ "${USER}" != "root" ] && [ ! -d "/home/${USER}" ] && [ "${PUID}" -ne 0 ] && [ "${PGID}" -ne 0 ]; then \
     addgroup -g ${PGID} ${USER}; \
@@ -55,14 +73,28 @@ RUN if [ "${USER}" != "root" ] && [ ! -d "/home/${USER}" ] && [ "${PUID}" -ne 0 
     # sed -i "/%sudo/c ${USER} ALL=(ALL:ALL) NOPASSWD:ALL" /etc/sudoers; \
     fi
 
-RUN apk update \
-    && apk add --no-cache \
-    vim
+RUN apk add --no-cache \
+    qbittorrent-nox=${QBITTORRENT_VERSION} \
+    && mkdir -p /var/lib/qBittorrent/bin/ \
+    && mkdir -p /var/lib/qBittorrent/cache/ \
+    && mkdir -p /var/lib/qBittorrent/config/ \
+    && mkdir -p /var/lib/qBittorrent/data/ \
+    && mkdir -p /var/lib/qBittorrent/downloads/ \
+    && mkdir -p /var/lib/qBittorrent/incomplete/ \
+    && mkdir -p /var/lib/qBittorrent/logs/ \
+    && mkdir -p /var/lib/qBittorrent/torrents/ \
+    && rm -rfv /var/lib/qbittorrent \
+    && find / -name "*qBittorrent*" -exec chown -Rv ${USER}:${USER} {} \; 
 
 # Enable CAP_NET_BIND_SERVICE
 # RUN if [ "${USER}" != "root" ] && [ "${CAP_NET_BIND_SERVICE}" -eq 1 ]; then \
     # setcap 'cap_net_bind_service=+ep' `which nginx`; \
     # fi
+COPY config /var/lib/qBittorrent/config
+
+COPY --from=builder /home/go/passwd /var/lib/qBittorrent/bin
+
+EXPOSE 8080 25413/tcp 25413/udp
 
 COPY entrypoint.d /usr/local/bin/entrypoint.d
 
