@@ -1,4 +1,4 @@
-FROM snowdreamtech/golang:1.23.3-bookworm AS builder
+FROM snowdreamtech/golang:1.24.4-trixie AS builder
 
 ENV QBT_PW_GEN_VERSION=1.0.2
 
@@ -103,7 +103,7 @@ RUN set -eux \
 
 COPY config /var/lib/qBittorrent/config
 
-COPY --from=builder /home/go/passwd /var/lib/qBittorrent/bin
+COPY --from=builder /root/passwd /var/lib/qBittorrent/bin
 
 EXPOSE 8080 25413/tcp 25413/udp
 
