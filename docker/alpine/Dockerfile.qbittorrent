@@ -30,7 +30,7 @@ ARG BUILDTIME \
     PUID=0 \
     USER=root \
     WORKDIR=/root \
-    QBITTORRENT_VERSION=5.2.1-r0
+    QBITTORRENT_VERSION=5.2.1
 
 # Standard OCI Metadata (https://github.com/opencontainers/image-spec)
 LABEL org.opencontainers.image.authors="Snowdream Tech" \
@@ -68,9 +68,9 @@ ENV KEEPALIVE=${KEEPALIVE} \
     WEBUI_LANG="en"
 
 # Additional tooling and configuration for Base image
-RUN apk update \
+RUN set -eux \
     && apk add --no-cache \
-    qbittorrent-nox=${QBITTORRENT_VERSION} \
+    qbittorrent-nox~=${QBITTORRENT_VERSION} \
     vim \
     && mkdir -p /var/lib/qBittorrent/bin/ \
     && mkdir -p /var/lib/qBittorrent/cache/ \

@@ -30,7 +30,7 @@ ARG BUILDTIME \
     PUID=0 \
     USER=root \
     WORKDIR=/root \
-    QBITTORRENT_VERSION=5.2.1-r0 \
+    QBITTORRENT_VERSION=5.2.1 \
     FLOOD_VERSION=4.8.2
 
 # Standard OCI Metadata (https://github.com/opencontainers/image-spec)
@@ -71,9 +71,9 @@ ENV KEEPALIVE=${KEEPALIVE} \
     FLOOD_PORT=3000
 
 # Additional tooling and configuration for Base image
-RUN apk update \
+RUN set -eux \
     && apk add --no-cache \
-    qbittorrent-nox=${QBITTORRENT_VERSION} \
+    qbittorrent-nox~=${QBITTORRENT_VERSION} \
     nodejs \
     npm \
     vim \
