@@ -216,7 +216,7 @@ Examples:
 
 - `snowdreamtech/qbittorrent:5.1.0-qbittorrent-debian`
 - `snowdreamtech/qbittorrent:5.2.2-flood-alpine`
-- `snowdreamtech/qbittorrent:4.6.3-qbittorrent-rocky`
+- `snowdreamtech/qbittorrent:5.2.1-qbittorrent-rocky`
 
 This format allows:
 
