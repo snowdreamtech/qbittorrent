@@ -74,7 +74,7 @@ ENV KEEPALIVE=${KEEPALIVE} \
 RUN dnf update -y \
     && dnf install -y --enablerepo=crb epel-release \
     && dnf install -y \
-    qbittorrent-nox-${QBITTORRENT_VERSION} \
+    qbittorrent-nox-1:${QBITTORRENT_VERSION} \
     vim \
     && dnf clean all \
     && mkdir -p /var/lib/qBittorrent/bin/ \

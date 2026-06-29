@@ -30,7 +30,7 @@ ARG BUILDTIME \
     PUID=0 \
     USER=root \
     WORKDIR=/root \
-    QBITTORRENT_VERSION=5.2.1-r0 \
+    QBITTORRENT_VERSION=5.2.2-r0 \
     FLOOD_VERSION=4.8.2
 
 # Standard OCI Metadata (https://github.com/opencontainers/image-spec)
