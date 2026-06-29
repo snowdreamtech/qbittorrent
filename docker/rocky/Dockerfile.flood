@@ -34,7 +34,7 @@ ARG BUILDTIME \
     USER=root \
     WORKDIR=/root \
     QBITTORRENT_VERSION=5.2.1-1.el10_3 \
-    FLOOD_VERSION=4.8.2
+    FLOOD_VERSION=4.14.3
 
 # Standard OCI Metadata
 LABEL org.opencontainers.image.authors="Snowdream Tech" \
