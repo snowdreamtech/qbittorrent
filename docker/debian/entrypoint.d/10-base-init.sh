@@ -9,9 +9,9 @@
 # This script is intentionally minimal - it serves as a placeholder for
 # future initialization logic specific to the base image layer.
 #
-# Common use cases:
-#   - Additional environment variable setup
-#   - Custom directory creation
+# Common use cases for adding scripts here:
+#   - Environment variable validation/transformation
+#   - Dynamic configuration generation
 #   - Service-specific initialization
 #   - Health check preparation
 #
@@ -20,7 +20,6 @@
 #   - Timezone configuration (TZ)
 #   - Umask settings (UMASK)
 #   - Working directory setup (WORKDIR)
-#   - DEBIAN_FRONTEND=noninteractive for apt operations
 # =============================================================================
 
 # Exit immediately if any command fails
