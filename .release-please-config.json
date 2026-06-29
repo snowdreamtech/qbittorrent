@@ -5,13 +5,18 @@
       "release-type": "simple",
       "component": "alpine",
       "include-component-in-tag": true,
-      "release-as": "3.24.0",
+      "release-as": "5.2.2",
       "changelog-path": "CHANGELOG.md",
       "exclude-paths": ["docker/alpine/CHANGELOG.md"],
       "extra-files": [
         {
           "type": "generic",
-          "path": "Dockerfile",
+          "path": "Dockerfile.qbittorrent",
+          "glob": false
+        },
+        {
+          "type": "generic",
+          "path": "Dockerfile.flood",
           "glob": false
         }
       ]
@@ -20,13 +25,18 @@
       "release-type": "simple",
       "component": "debian",
       "include-component-in-tag": true,
-      "release-as": "13.5.0",
+      "release-as": "5.1.0",
       "changelog-path": "CHANGELOG.md",
       "exclude-paths": ["docker/debian/CHANGELOG.md"],
       "extra-files": [
         {
           "type": "generic",
-          "path": "Dockerfile",
+          "path": "Dockerfile.qbittorrent",
+          "glob": false
+        },
+        {
+          "type": "generic",
+          "path": "Dockerfile.flood",
           "glob": false
         }
       ]
@@ -35,13 +45,18 @@
       "release-type": "simple",
       "component": "rocky",
       "include-component-in-tag": true,
-      "release-as": "10.2.0",
+      "release-as": "4.6.3",
       "changelog-path": "CHANGELOG.md",
       "exclude-paths": ["docker/rocky/CHANGELOG.md"],
       "extra-files": [
         {
           "type": "generic",
-          "path": "Dockerfile",
+          "path": "Dockerfile.qbittorrent",
+          "glob": false
+        },
+        {
+          "type": "generic",
+          "path": "Dockerfile.flood",
           "glob": false
         }
       ]
