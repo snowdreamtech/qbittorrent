@@ -1,15 +1,15 @@
-# Base
+# qBittorrent
 
-![Docker Image Version](https://img.shields.io/docker/v/snowdreamtech/base)
-![Docker Image Size](https://img.shields.io/docker/image-size/snowdreamtech/base/latest)
-![Docker Pulls](https://img.shields.io/docker/pulls/snowdreamtech/base)
-![Docker Stars](https://img.shields.io/docker/stars/snowdreamtech/base)
+![Docker Image Version](https://img.shields.io/docker/v/snowdreamtech/qbittorrent)
+![Docker Image Size](https://img.shields.io/docker/image-size/snowdreamtech/qbittorrent/latest)
+![Docker Pulls](https://img.shields.io/docker/pulls/snowdreamtech/qbittorrent)
+![Docker Stars](https://img.shields.io/docker/stars/snowdreamtech/qbittorrent)
 
-Docker base template providing standardized container foundations with flexible entrypoint systems, multi-architecture support, and consistent configuration patterns across Alpine, Debian, and Rocky Linux distributions.
+Docker qbittorrent template providing standardized container foundations with flexible entrypoint systems, multi-architecture support, and consistent configuration patterns across Alpine, Debian, and Rocky Linux distributions.
 
 ## Overview
 
-The Docker base template serves as a foundational starting point for building containerized applications. It provides:
+The Docker qbittorrent template serves as a foundational starting point for building containerized applications. It provides:
 
 - **Standardized Dockerfiles** with OCI annotations and best practices
 - **Flexible entrypoint system** supporting custom initialization scripts
@@ -22,8 +22,8 @@ The Docker base template serves as a foundational starting point for building co
 
 ```bash
 # Pull and run the default Debian variant
-docker pull snowdreamtech/base:debian
-docker run -d --name=base -e TZ=Asia/Shanghai snowdreamtech/base:debian
+docker pull snowdreamtech/qbittorrent:debian
+docker run -d --name=qbittorrent -e TZ=Asia/Shanghai snowdreamtech/qbittorrent:debian
 
 # Or use docker-compose
 docker-compose up -d
@@ -37,15 +37,15 @@ The recommended variant for most use cases, providing wide compatibility and ext
 
 ```bash
 docker run -d \
-  --name=base \
+  --name=qbittorrent \
   -e TZ=Asia/Shanghai \
   --restart unless-stopped \
-  snowdreamtech/base:debian
+  snowdreamtech/qbittorrent:debian
 ```
 
 **Supported Architectures**: i386, amd64, arm32v5, arm32v7, arm64, mips64le, ppc64le, s390x
 
-**Base Image**: `snowdreamtech/debian:13.5.0`
+**qBittorrent Image**: `snowdreamtech/debian:13.5.0`
 
 ### Alpine
 
@@ -53,31 +53,31 @@ Lightweight variant optimized for minimal image size and fast startup times.
 
 ```bash
 docker run -d \
-  --name=base \
+  --name=qbittorrent \
   -e TZ=Asia/Shanghai \
   --restart unless-stopped \
-  snowdreamtech/base:alpine
+  snowdreamtech/qbittorrent:alpine
 ```
 
 **Supported Architectures**: i386, amd64, arm32v6, arm32v7, arm64, ppc64le, riscv64, s390x
 
-**Base Image**: `snowdreamtech/alpine:3.24.0`
+**qBittorrent Image**: `snowdreamtech/alpine:3.24.0`
 
 ### Rocky
 
-Enterprise-focused variant based on Rocky Linux, ideal for production environments requiring RHEL compatibility.
+Enterprise-focused variant qbittorrentd on Rocky Linux, ideal for production environments requiring RHEL compatibility.
 
 ```bash
 docker run -d \
-  --name=base \
+  --name=qbittorrent \
   -e TZ=Asia/Shanghai \
   --restart unless-stopped \
-  snowdreamtech/base:rocky
+  snowdreamtech/qbittorrent:rocky
 ```
 
 **Supported Architectures**: i386, amd64, arm32v5, arm32v7, arm64, mips64le, ppc64le, s390x
 
-**Base Image**: `snowdreamtech/rocky:10.2.0`
+**qBittorrent Image**: `snowdreamtech/rocky:10.2.0`
 
 ## Build Instructions
 
@@ -85,13 +85,13 @@ docker run -d \
 
 ```bash
 # Build Debian variant
-docker build -t snowdreamtech/base:debian ./docker/debian/
+docker build -t snowdreamtech/qbittorrent:debian ./docker/debian/
 
 # Build Alpine variant
-docker build -t snowdreamtech/base:alpine ./docker/alpine/
+docker build -t snowdreamtech/qbittorrent:alpine ./docker/alpine/
 
 # Build Rocky variant
-docker build -t snowdreamtech/base:rocky ./docker/rocky/
+docker build -t snowdreamtech/qbittorrent:rocky ./docker/rocky/
 ```
 
 ### Multi-Architecture Build
@@ -105,21 +105,21 @@ docker buildx create --use --name build --node build --driver-opt network=host
 # Build Debian for multiple architectures
 docker buildx build \
   --platform=linux/386,linux/amd64,linux/arm/v5,linux/arm/v7,linux/arm64,linux/mips64le,linux/ppc64le,linux/s390x \
-  -t snowdreamtech/base:debian \
+  -t snowdreamtech/qbittorrent:debian \
   ./docker/debian/ \
   --push
 
 # Build Alpine for multiple architectures
 docker buildx build \
   --platform=linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/riscv64,linux/s390x \
-  -t snowdreamtech/base:alpine \
+  -t snowdreamtech/qbittorrent:alpine \
   ./docker/alpine/ \
   --push
 
 # Build Rocky for multiple architectures
 docker buildx build \
   --platform=linux/386,linux/amd64,linux/arm/v5,linux/arm/v7,linux/arm64,linux/mips64le,linux/ppc64le,linux/s390x \
-  -t snowdreamtech/base:rocky \
+  -t snowdreamtech/qbittorrent:rocky \
   ./docker/rocky/ \
   --push
 ```
@@ -156,7 +156,7 @@ docker build \
   --build-arg PUID=1000 \
   --build-arg PGID=1000 \
   --build-arg USER=appuser \
-  -t snowdreamtech/base:debian-custom \
+  -t snowdreamtech/qbittorrent:debian-custom \
   ./docker/debian/
 ```
 
@@ -164,11 +164,11 @@ Or at runtime (requires rebuilding the image):
 
 ```bash
 docker run -d \
-  --name=base \
+  --name=qbittorrent \
   -e PUID=1000 \
   -e PGID=1000 \
   -e USER=appuser \
-  snowdreamtech/base:debian
+  snowdreamtech/qbittorrent:debian
 ```
 
 **Note**: User creation only occurs when `PUID≠0`, `PGID≠0`, and `USER≠root`.
@@ -179,9 +179,9 @@ docker run -d \
 
 ```yaml
 services:
-  base:
-    image: snowdreamtech/base:debian
-    container_name: base
+  qbittorrent:
+    image: snowdreamtech/qbittorrent:debian
+    container_name: qbittorrent
     environment:
       - TZ=Asia/Shanghai
     restart: unless-stopped
@@ -191,9 +191,9 @@ services:
 
 ```yaml
 services:
-  base:
-    image: snowdreamtech/base:debian
-    container_name: base
+  qbittorrent:
+    image: snowdreamtech/qbittorrent:debian
+    container_name: qbittorrent
     environment:
       - TZ=Asia/Shanghai
       - DEBUG=true
@@ -205,19 +205,24 @@ services:
 
 ## Semantic Versioning Tags
 
-Images follow semantic versioning with the format: `{major}.{minor}.{patch}-{variant}`
+Images follow semantic versioning with the format: `{major}.{minor}.{patch}-{flavor}-{variant}`
+
+**Flavors:**
+
+- `qbittorrent`: Base qBittorrent image.
+- `flood`: qBittorrent with Flood web UI.
 
 Examples:
 
-- `snowdreamtech/base:13.5.0-debian`
-- `snowdreamtech/base:3.24.0-alpine`
-- `snowdreamtech/base:10.2.0-rocky`
+- `snowdreamtech/qbittorrent:5.1.0-qbittorrent-debian`
+- `snowdreamtech/qbittorrent:5.2.2-flood-alpine`
+- `snowdreamtech/qbittorrent:4.6.3-qbittorrent-rocky`
 
 This format allows:
 
-- **Full version pinning**: `13.5.0-debian` (exact version)
-- **Variant latest tag**: `latest-debian` (tracks most recent release for Debian)
-- **Global latest tag**: `latest` (tracks most recent release, defaults to Debian)
+- **Full version pinning**: `5.1.0-qbittorrent-debian` (exact version)
+- **Flavor latest tag**: `latest-flood-alpine` (tracks most recent release for Flood on Alpine)
+- **Global latest tag**: `latest` (tracks most recent release, defaults to qBittorrent on Debian)
 
 ## Architecture Support
 
@@ -233,7 +238,7 @@ Docker automatically selects the appropriate architecture for your platform when
 
 ## Entrypoint System
 
-The base template includes a flexible entrypoint system that executes custom initialization scripts before starting your application.
+The qbittorrent template includes a flexible entrypoint system that executes custom initialization scripts before starting your application.
 
 ### How It Works
 
@@ -247,7 +252,7 @@ The base template includes a flexible entrypoint system that executes custom ini
 Create custom initialization scripts in your derived Dockerfile:
 
 ```dockerfile
-FROM snowdreamtech/base:debian
+FROM snowdreamtech/qbittorrent:debian
 
 # Add your custom initialization script
 COPY my-init.sh /usr/local/bin/entrypoint.d/20-my-init.sh
@@ -263,14 +268,14 @@ CMD ["/app/start.sh"]
 Enable debug output to troubleshoot entrypoint execution:
 
 ```bash
-docker run -e DEBUG=true snowdreamtech/base:debian
+docker run -e DEBUG=true snowdreamtech/qbittorrent:debian
 ```
 
 Output example:
 
 ```
 → [ENTRYPOINT] Executing all scripts in /usr/local/bin/entrypoint.d
-→ Running /usr/local/bin/entrypoint.d/10-base-init.sh
+→ Running /usr/local/bin/entrypoint.d/10-qbittorrent-init.sh
 → [ENTRYPOINT] Done.
 ```
 
@@ -288,24 +293,24 @@ Output example:
 make build
 
 # Build specific variant
-docker build -t base:debian ./docker/debian/
-docker build -t base:alpine ./docker/alpine/
-docker build -t base:rocky ./docker/rocky/
+docker build -t qbittorrent:latest ./docker/debian/
+docker build -t qbittorrent:alpine ./docker/alpine/
+docker build -t qbittorrent:rocky ./docker/rocky/
 ```
 
 ### Testing
 
 ```bash
 # Test default configuration
-docker run --rm base:debian id
+docker run --rm qbittorrent:latest id
 
 # Test custom user creation
-docker build --build-arg PUID=1000 --build-arg PGID=1000 --build-arg USER=testuser -t base:debian-test ./docker/debian/
-docker run --rm base:debian-test id
+docker build --build-arg PUID=1000 --build-arg PGID=1000 --build-arg USER=testuser -t qbittorrent:latest-test ./docker/debian/
+docker run --rm qbittorrent:latest-test id
 # Expected: uid=1000(testuser) gid=1000(testuser)
 
 # Test DEBUG mode
-docker run --rm -e DEBUG=true base:debian
+docker run --rm -e DEBUG=true qbittorrent:latest
 ```
 
 ## Reference
@@ -317,7 +322,7 @@ docker run --rm -e DEBUG=true base:debian
 5. [Faster Multi-Platform Builds: Dockerfile Cross-Compilation Guide](https://www.docker.com/blog/faster-multi-platform-builds-dockerfile-cross-compilation-guide/)
 6. [docker/buildx](https://github.com/docker/buildx)
 
-## Contact (备注：base)
+## Contact (备注：qbittorrent)
 
 * Email: <sn0wdr1am@qq.com>
 * QQ: 3217680847
