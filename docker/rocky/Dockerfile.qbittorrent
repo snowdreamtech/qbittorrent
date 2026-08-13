@@ -33,7 +33,7 @@ ARG BUILDTIME \
     PUID=0 \
     USER=root \
     WORKDIR=/root \
-    QBITTORRENT_VERSION=5.2.1-1.el10_2
+    QBITTORRENT_VERSION=5.2.1
 
 # Standard OCI Metadata
 LABEL org.opencontainers.image.authors="Snowdream Tech" \
@@ -71,7 +71,7 @@ ENV KEEPALIVE=${KEEPALIVE} \
 RUN dnf update -y \
     && dnf install -y --enablerepo=crb epel-release \
     && dnf install -y \
-    qbittorrent-nox-1:${QBITTORRENT_VERSION} \
+    qbittorrent-nox-${QBITTORRENT_VERSION}* \
     vim \
     && dnf clean all \
     && mkdir -p /var/lib/qBittorrent/bin/ \
