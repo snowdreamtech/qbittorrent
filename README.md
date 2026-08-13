@@ -224,8 +224,6 @@ This format allows:
 - **Variant latest tag**: `latest-debian` (tracks most recent release for Debian)
 - **Global latest tag**: `latest` (tracks most recent release, defaults to Debian)
 
->>>>>>> upstream/dev
-
 ## Architecture Support
 
 Each distribution variant supports multiple CPU architectures for deployment across diverse hardware platforms:
