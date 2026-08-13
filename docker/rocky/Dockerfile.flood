@@ -71,14 +71,14 @@ ENV KEEPALIVE=${KEEPALIVE} \
     FLOOD_PORT=3000
 
 # Additional tooling and configuration
-RUN dnf update -y \
-    && dnf install -y --enablerepo=crb epel-release \
-    && dnf install -y \
-    qbittorrent-nox-1:${QBITTORRENT_VERSION} \
+RUN dnf -y --allowerasing --setopt=*.skip_if_unavailable=true update \
+    && dnf -y --allowerasing --setopt=*.skip_if_unavailable=true install --enablerepo=crb epel-release \
+    && dnf -y --allowerasing --setopt=*.skip_if_unavailable=true install --enablerepo=crb \
+    qbittorrent-nox-${QBITTORRENT_VERSION}* \
     nodejs \
     npm \
     vim \
-    && dnf clean all \
+    && dnf -y --allowerasing clean all \
     && mkdir -p /var/lib/qBittorrent/bin/ \
     && mkdir -p /var/lib/qBittorrent/cache/ \
     && mkdir -p /var/lib/qBittorrent/config/ \

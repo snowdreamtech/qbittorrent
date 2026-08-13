@@ -70,7 +70,7 @@ ENV KEEPALIVE=${KEEPALIVE} \
 # Additional tooling and configuration
 RUN dnf -y --allowerasing --setopt=*.skip_if_unavailable=true update \
     && dnf -y --allowerasing --setopt=*.skip_if_unavailable=true install --enablerepo=crb epel-release \
-    && dnf -y --allowerasing --setopt=*.skip_if_unavailable=true install \
+    && dnf -y --allowerasing --setopt=*.skip_if_unavailable=true install --enablerepo=crb \
     qbittorrent-nox-${QBITTORRENT_VERSION}* \
     vim \
     && dnf -y --allowerasing clean all \
