@@ -43,9 +43,9 @@ docker run -d \
   snowdreamtech/qbittorrent:debian
 ```
 
-**Supported Architectures**: i386, amd64, arm32v5, arm32v7, arm64, mips64le, ppc64le, s390x
+**Supported Architectures**: amd64, arm32v7, arm64, ppc64le, riscv64, s390x
 
-**qBittorrent Image**: `snowdreamtech/debian:13.5.0`
+**Base Image**: `snowdreamtech/debian:latest`
 
 ### Alpine
 
@@ -61,7 +61,7 @@ docker run -d \
 
 **Supported Architectures**: i386, amd64, arm32v6, arm32v7, arm64, ppc64le, riscv64, s390x
 
-**qBittorrent Image**: `snowdreamtech/alpine:3.24.0`
+**Base Image**: `snowdreamtech/alpine:latest`
 
 ### Rocky
 
@@ -75,9 +75,9 @@ docker run -d \
   snowdreamtech/qbittorrent:rocky
 ```
 
-**Supported Architectures**: i386, amd64, arm32v5, arm32v7, arm64, mips64le, ppc64le, s390x
+**Supported Architectures**: amd64, arm64, ppc64le, s390x
 
-**qBittorrent Image**: `snowdreamtech/rocky:10.2.0`
+**Base Image**: `snowdreamtech/rocky:latest`
 
 ## Build Instructions
 
@@ -104,7 +104,7 @@ docker buildx create --use --name build --node build --driver-opt network=host
 
 # Build Debian for multiple architectures
 docker buildx build \
-  --platform=linux/386,linux/amd64,linux/arm/v5,linux/arm/v7,linux/arm64,linux/mips64le,linux/ppc64le,linux/s390x \
+  --platform=linux/amd64,linux/arm/v7,linux/arm64,linux/ppc64le,linux/riscv64,linux/s390x \
   -t snowdreamtech/qbittorrent:debian \
   ./docker/debian/ \
   --push
@@ -118,7 +118,7 @@ docker buildx build \
 
 # Build Rocky for multiple architectures
 docker buildx build \
-  --platform=linux/386,linux/amd64,linux/arm/v5,linux/arm/v7,linux/arm64,linux/mips64le,linux/ppc64le,linux/s390x \
+  --platform=linux/amd64,linux/arm64,linux/ppc64le,linux/s390x \
   -t snowdreamtech/qbittorrent:rocky \
   ./docker/rocky/ \
   --push
@@ -214,15 +214,17 @@ Images follow semantic versioning with the format: `{major}.{minor}.{patch}-{fla
 
 Examples:
 
-- `snowdreamtech/qbittorrent:5.1.0-qbittorrent-debian`
-- `snowdreamtech/qbittorrent:5.2.2-flood-alpine`
-- `snowdreamtech/qbittorrent:5.2.1-qbittorrent-rocky`
+- `snowdreamtech/qbittorrent:<version>-qbittorrent-debian`
+- `snowdreamtech/qbittorrent:<version>-flood-alpine`
+- `snowdreamtech/qbittorrent:<version>-qbittorrent-rocky`
 
 This format allows:
 
-- **Full version pinning**: `5.1.0-qbittorrent-debian` (exact version)
-- **Flavor latest tag**: `latest-flood-alpine` (tracks most recent release for Flood on Alpine)
-- **Global latest tag**: `latest` (tracks most recent release, defaults to qBittorrent on Debian)
+- **Full version pinning**: `<version>-debian` (exact version)
+- **Variant latest tag**: `latest-debian` (tracks most recent release for Debian)
+- **Global latest tag**: `latest` (tracks most recent release, defaults to Debian)
+
+>>>>>>> upstream/dev
 
 ## Architecture Support
 
@@ -230,9 +232,9 @@ Each distribution variant supports multiple CPU architectures for deployment acr
 
 | Variant | Architectures |
 |---------|---------------|
-| **Debian** | i386, amd64, arm32v5, arm32v7, arm64, mips64le, ppc64le, s390x |
+| **Debian** | amd64, arm32v7, arm64, ppc64le, riscv64, s390x |
 | **Alpine** | i386, amd64, arm32v6, arm32v7, arm64, ppc64le, riscv64, s390x |
-| **Rocky** | i386, amd64, arm32v5, arm32v7, arm64, mips64le, ppc64le, s390x |
+| **Rocky** | amd64, arm64, ppc64le, s390x |
 
 Docker automatically selects the appropriate architecture for your platform when pulling images.
 
