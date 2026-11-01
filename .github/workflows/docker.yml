@@ -533,7 +533,7 @@ jobs:
       - name: "🕵️ Scan Image for Vulnerabilities (Trivy)"
         id: trivy
         if: steps.variant-filter.outputs.skip != 'true' && steps.build.conclusion == 'success'
-        uses: aquasecurity/trivy-action@785989e2e60408bf932d0c2e6fca783f99092822 # v0.34.1
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           scan-type: "image"
           image-ref: ${{ steps.trivy-image.outputs.tag }}
@@ -567,7 +567,7 @@ jobs:
       - name: "📤 Upload Image Security Scan (SARIF)"
         if: steps.variant-filter.outputs.skip != 'true' && steps.build.conclusion == 'success' && steps.trivy.outcome == 'success'
         continue-on-error: true
-        uses: github/codeql-action/upload-sarif@a691b0b5faeb9255be9d282e46b0a9df00084347 # v4.3.0
+        uses: github/codeql-action/upload-sarif@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
         with:
           sarif_file: "trivy-image-${{ matrix.flavor }}-${{ matrix.variant }}.sarif"
           category: "trivy-image-${{ matrix.flavor }}-${{ matrix.variant }}"
