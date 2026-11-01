@@ -1,18 +1,41 @@
 # Changelog
 
-## [3.24.1](https://github.com/snowdreamtech/base/compare/alpine-v3.24.1...alpine-v3.24.1) (2026-10-28)
+## [5.3.0](https://github.com/snowdreamtech/qbittorrent/compare/alpine-v5.2.2...alpine-v5.3.0) (2026-11-01)
 
 
 ### 🚀 Features
 
-* initial release of snowdreamtech base docker images powered by unirtm ([25f55c8](https://github.com/snowdreamtech/base/commit/25f55c84e8fba977d226739e9871d61e1428fdeb))
+* upgrade qBittorrent to 5.3.0 and Flood to 4.16.3
 
-## [3.24.0](https://github.com/snowdreamtech/base/compare/alpine-v3.24.0...alpine-v3.24.0) (2026-07-03)
+## [5.2.2](https://github.com/snowdreamtech/qbittorrent/compare/alpine-v5.2.2...alpine-v5.2.2) (2026-08-13)
+
+
+### 🐛 Bug Fixes
+
+* remove static version defaults from OCI image labels to use variable injection exclusively ([da5645a](https://github.com/snowdreamtech/qbittorrent/commit/da5645ad4d48467290235abbbd9f31ba70bf690f))
 
 
 ### ♻️ Miscellaneous Chores
 
-* add 0-git-keep.sh to prevent empty entrypoint.d directories ([ce77247](https://github.com/snowdreamtech/base/commit/ce77247762becc1edf85ec7b57747d3f3127044a))
+* add 0-git-keep.sh to prevent empty entrypoint.d directories ([ce77247](https://github.com/snowdreamtech/qbittorrent/commit/ce77247762becc1edf85ec7b57747d3f3127044a))
+* release main ([5a92edb](https://github.com/snowdreamtech/qbittorrent/commit/5a92edb4ba76b04ee6de7369e9471f785849a7ae))
+* release main ([afa286c](https://github.com/snowdreamtech/qbittorrent/commit/afa286c5b9c41908021b044f31fee3348f52c973))
+* release main ([4011a21](https://github.com/snowdreamtech/qbittorrent/commit/4011a21a23395acc9545168c95ca0ec5c867e7d3))
+* **release:** deduplicate CHANGELOG headers ([c2bba24](https://github.com/snowdreamtech/qbittorrent/commit/c2bba247dca89a31accc6e70c5e48b16170b1ce5))
+* **release:** deduplicate CHANGELOG headers ([4f07b71](https://github.com/snowdreamtech/qbittorrent/commit/4f07b71194f58ba214f1fb60ce0dc56d71c499e2))
+* update alpine base image to 3.24.1 ([3021ed3](https://github.com/snowdreamtech/qbittorrent/commit/3021ed3b4ffa5f8916f5fa46aa4325e8ebf84ba6))
+
+## [3.24.0](https://github.com/snowdreamtech/base/compare/alpine-v3.24.0...alpine-v3.24.0) (2026-06-29)
+
+
+### 🐛 Bug Fixes
+
+* use ghcr.io for base images to avoid rate limits ([9f1d73a](https://github.com/snowdreamtech/base/commit/9f1d73a75a61f2f368f5572c4bd28f4c92ef8fd5))
+
+
+### ♻️ Miscellaneous Chores
+
+* release main ([b3a5cc9](https://github.com/snowdreamtech/base/commit/b3a5cc9ef0a64a7bc04ed7c2acf0cca5327c5c26))
 
 ## [3.23.4](https://github.com/snowdreamtech/base/compare/alpine-v3.23.4...alpine-v3.23.4) (2026-04-29)
 

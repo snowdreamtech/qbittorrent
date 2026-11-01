@@ -1,22 +1,22 @@
-# Base
+# qBittorrent
 
-[![CI Pipeline](https://img.shields.io/github/actions/workflow/status/snowdreamtech/base/ci.yml?branch=main&label=CI%20Pipeline)](https://github.com/snowdreamtech/base/actions/workflows/ci.yml)
-[![CD Pipeline](https://img.shields.io/github/actions/workflow/status/snowdreamtech/base/cd.yml?branch=main&label=CD%20Pipeline)](https://github.com/snowdreamtech/base/actions/workflows/cd.yml)
-[![CodeQL](https://img.shields.io/github/actions/workflow/status/snowdreamtech/base/codeql.yml?branch=main&label=CodeQL&logo=github)](https://github.com/snowdreamtech/base/actions/workflows/codeql.yml)
-[![Security Audit](https://img.shields.io/badge/Security-Zizmor%20%7C%20Trivy%20%7C%20Gitleaks-brightgreen)](https://github.com/snowdreamtech/base/actions/workflows/ci.yml)
+[![CI Pipeline](https://img.shields.io/github/actions/workflow/status/snowdreamtech/qbittorrent/ci.yml?branch=main&label=CI%20Pipeline)](https://github.com/snowdreamtech/qbittorrent/actions/workflows/ci.yml)
+[![CD Pipeline](https://img.shields.io/github/actions/workflow/status/snowdreamtech/qbittorrent/cd.yml?branch=main&label=CD%20Pipeline)](https://github.com/snowdreamtech/qbittorrent/actions/workflows/cd.yml)
+[![CodeQL](https://img.shields.io/github/actions/workflow/status/snowdreamtech/qbittorrent/codeql.yml?branch=main&label=CodeQL&logo=github)](https://github.com/snowdreamtech/qbittorrent/actions/workflows/codeql.yml)
+[![Security Audit](https://img.shields.io/badge/Security-Zizmor%20%7C%20Trivy%20%7C%20Gitleaks-brightgreen)](https://github.com/snowdreamtech/qbittorrent/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/license/MIT)
-![Docker Image Version](https://img.shields.io/docker/v/snowdreamtech/base)
-![Docker Image Size](https://img.shields.io/docker/image-size/snowdreamtech/base/latest)
-![Docker Pulls](https://img.shields.io/docker/pulls/snowdreamtech/base)
-![Docker Stars](https://img.shields.io/docker/stars/snowdreamtech/base)
+![Docker Image Version](https://img.shields.io/docker/v/snowdreamtech/qbittorrent)
+![Docker Image Size](https://img.shields.io/docker/image-size/snowdreamtech/qbittorrent/latest)
+![Docker Pulls](https://img.shields.io/docker/pulls/snowdreamtech/qbittorrent)
+![Docker Stars](https://img.shields.io/docker/stars/snowdreamtech/qbittorrent)
 
 [English](README.md) | [简体中文](README_zh-CN.md)
 
-Docker base template providing standardized container foundations with flexible entrypoint systems, multi-architecture support, and consistent configuration patterns across Alpine, Debian, and Rocky Linux distributions.
+Docker image for qBittorrent providing standardized container foundations with flexible entrypoint systems, multi-architecture support, and consistent configuration patterns across Alpine, Debian, and Rocky Linux distributions, with optional Flood web user interface.
 
 ## Overview
 
-The Docker base template serves as a foundational starting point for building containerized applications. It provides:
+The qBittorrent container provides:
 
 - **Standardized Dockerfiles** with OCI annotations and best practices
 - **Flexible entrypoint system** supporting custom initialization scripts
@@ -24,16 +24,111 @@ The Docker base template serves as a foundational starting point for building co
 - **Multi-architecture support** for diverse hardware platforms
 - **User/group management** with PUID/PGID support for permission handling
 - **Three distribution variants**: Alpine (lightweight), Debian (default/widely-compatible), Rocky (enterprise)
+- **Two flavors**: core `qbittorrent` (with native Web UI) and `flood` (with modern Flood Web UI)
 
 ## Quick Start
 
 ```bash
 # Pull and run the default Debian variant
-docker pull snowdreamtech/base:debian
-docker run -d --name=base -e TZ=Asia/Shanghai snowdreamtech/base:debian
+docker pull snowdreamtech/qbittorrent:debian
+docker run -d \
+  --name=qbittorrent \
+  -e TZ=Asia/Shanghai \
+  -p 8080:8080 \
+  -p 25413:25413 \
+  -p 25413:25413/udp \
+  -v ./downloads:/var/lib/qBittorrent/downloads \
+  -v ./config:/var/lib/qBittorrent/config \
+  --restart unless-stopped \
+  snowdreamtech/qbittorrent:debian
 
 # Or use docker compose
 docker compose up -d
+```
+
+## Usage
+
+Default Web UI access:
+- **URL**: `http://localhost:8080`
+- **Username**: `admin`
+- **Password**: Check container logs on first startup or configure `WEBUI_USER` and `WEBUI_PASS`.
+
+### Docker CLI
+
+```bash
+docker run -d \
+  --name=qbittorrent \
+  -e TZ=Asia/Shanghai \
+  -p 8080:8080 \
+  -p 25413:25413 \
+  -p 25413:25413/udp \
+  -v ./downloads:/var/lib/qBittorrent/downloads \
+  -v ./config:/var/lib/qBittorrent/config \
+  --restart unless-stopped \
+  snowdreamtech/qbittorrent:latest
+# snowdreamtech/qbittorrent:alpine
+# snowdreamtech/qbittorrent:debian
+# snowdreamtech/qbittorrent:rocky
+```
+
+### Docker Compose
+
+```yaml
+services:
+  qbittorrent:
+    image: snowdreamtech/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - TZ=Asia/Shanghai
+      - WEBUI_PORT=8080
+      - PEER_PORT=25413
+    ports:
+      - "8080:8080"
+      - "25413:25413"
+      - "25413:25413/udp"
+    volumes:
+      - ./downloads:/var/lib/qBittorrent/downloads
+      - ./config:/var/lib/qBittorrent/config
+    restart: unless-stopped
+```
+
+## Web UI Flavors
+
+In addition to the standard `qbittorrent` flavor with native Web UI, a Flood-integrated flavor is available:
+
+### Standard (`qbittorrent`)
+
+Features the built-in qBittorrent Web UI on port 8080.
+
+```bash
+docker run -d \
+  --name=qbittorrent \
+  -e TZ=Asia/Shanghai \
+  -p 8080:8080 \
+  -p 25413:25413 \
+  -p 25413:25413/udp \
+  -v ./downloads:/var/lib/qBittorrent/downloads \
+  -v ./config:/var/lib/qBittorrent/config \
+  --restart unless-stopped \
+  snowdreamtech/qbittorrent:latest
+```
+
+### Flood (`flood`)
+
+Features the modern, responsive [Flood](https://github.com/jesec/flood) interface on port 3000.
+
+```bash
+docker run -d \
+  --name=qbittorrent-flood \
+  -e TZ=Asia/Shanghai \
+  -p 3000:3000 \
+  -p 8080:8080 \
+  -p 25413:25413 \
+  -p 25413:25413/udp \
+  -v ./downloads:/var/lib/qBittorrent/downloads \
+  -v ./config:/var/lib/qBittorrent/config \
+  --restart unless-stopped \
+  snowdreamtech/qbittorrent:latest-flood
 ```
 
 ## Distribution Variants
@@ -44,15 +139,20 @@ The recommended variant for most use cases, providing wide compatibility and ext
 
 ```bash
 docker run -d \
-  --name=base \
+  --name=qbittorrent \
   -e TZ=Asia/Shanghai \
+  -p 8080:8080 \
+  -p 25413:25413 \
+  -p 25413:25413/udp \
+  -v ./downloads:/var/lib/qBittorrent/downloads \
+  -v ./config:/var/lib/qBittorrent/config \
   --restart unless-stopped \
-  snowdreamtech/base:debian
+  snowdreamtech/qbittorrent:debian
 ```
 
 **Supported Architectures**: amd64, arm32v7, arm64, ppc64le, riscv64, s390x
 
-**Base Image**: `snowdreamtech/debian:latest`
+**Base Image**: `snowdreamtech/debian:13.6.0`
 
 ### Alpine
 
@@ -60,15 +160,20 @@ Lightweight variant optimized for minimal image size and fast startup times.
 
 ```bash
 docker run -d \
-  --name=base \
+  --name=qbittorrent \
   -e TZ=Asia/Shanghai \
+  -p 8080:8080 \
+  -p 25413:25413 \
+  -p 25413:25413/udp \
+  -v ./downloads:/var/lib/qBittorrent/downloads \
+  -v ./config:/var/lib/qBittorrent/config \
   --restart unless-stopped \
-  snowdreamtech/base:alpine
+  snowdreamtech/qbittorrent:alpine
 ```
 
-**Supported Architectures**: i386, amd64, arm32v6, arm32v7, arm64, ppc64le, riscv64, s390x
+**Supported Architectures**: 386, amd64, arm/v6, arm/v7, arm64, ppc64le, riscv64, s390x
 
-**Base Image**: `snowdreamtech/alpine:latest`
+**Base Image**: `snowdreamtech/alpine:3.24.1`
 
 ### Rocky
 
@@ -76,172 +181,67 @@ Enterprise-focused variant based on Rocky Linux, ideal for production environmen
 
 ```bash
 docker run -d \
-  --name=base \
+  --name=qbittorrent \
   -e TZ=Asia/Shanghai \
+  -p 8080:8080 \
+  -p 25413:25413 \
+  -p 25413:25413/udp \
+  -v ./downloads:/var/lib/qBittorrent/downloads \
+  -v ./config:/var/lib/qBittorrent/config \
   --restart unless-stopped \
-  snowdreamtech/base:rocky
+  snowdreamtech/qbittorrent:rocky
 ```
 
-**Supported Architectures**: i386, amd64, arm32v5, arm32v7, arm64, ppc64le, riscv64, s390x
+**Supported Architectures**: amd64, arm64, ppc64le, s390x
 
-**Base Image**: `snowdreamtech/rocky:latest`
-
-## Build Instructions
-
-### Single Architecture Build
-
-```bash
-# Build Debian variant
-docker build -t snowdreamtech/base:debian ./docker/debian/
-
-# Build Alpine variant
-docker build -t snowdreamtech/base:alpine ./docker/alpine/
-
-# Build Rocky variant
-docker build -t snowdreamtech/base:rocky ./docker/rocky/
-```
-
-### Multi-Architecture Build
-
-Build images for multiple architectures using `docker buildx`:
-
-```bash
-# Create and use a buildx builder
-docker buildx create --use --name build --node build --driver-opt network=host
-
-# Build Debian for multiple architectures
-docker buildx build \
-  --platform=linux/386,linux/amd64,linux/arm/v5,linux/arm/v7,linux/arm64,linux/ppc64le,linux/riscv64,linux/s390x \
-  -t snowdreamtech/base:debian \
-  ./docker/debian/ \
-  --push
-
-# Build Alpine for multiple architectures
-docker buildx build \
-  --platform=linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/riscv64,linux/s390x \
-  -t snowdreamtech/base:alpine \
-  ./docker/alpine/ \
-  --push
-
-# Build Rocky for multiple architectures
-docker buildx build \
-  --platform=linux/amd64,linux/arm64,linux/ppc64le,linux/s390x \
-  -t snowdreamtech/base:rocky \
-  ./docker/rocky/ \
-  --push
-```
+**Base Image**: `snowdreamtech/rocky:10.2.0`
 
 ## Environment Variables
 
 All variants support the following environment variables for runtime configuration:
 
-| Variable               | Default   | Description                                              |
-| ---------------------- | --------- | -------------------------------------------------------- |
-| `KEEPALIVE`            | `0`       | Keep container running (1=enabled, 0=disabled)           |
-| `CAP_NET_BIND_SERVICE` | `0`       | Enable binding to privileged ports (<1024)               |
-| `LANG`                 | `C.UTF-8` | Locale setting for UTF-8 character support               |
-| `UMASK`                | `022`     | Default file creation mask                               |
-| `DEBUG`                | `false`   | Enable debug output in entrypoint scripts                |
-| `PASSWORDLESS_SUDO`    | `false`   | Enable passwordless sudo for non-root users (true/false) |
-| `PGID`                 | `0`       | Primary group ID for custom user creation                |
-| `PUID`                 | `0`       | User ID for custom user creation                         |
-| `USER`                 | `root`    | Username for custom user creation                        |
-| `WORKDIR`              | `/root`   | Working directory path                                   |
-| `TZ`                   | -         | Timezone (e.g., `Asia/Shanghai`, `America/New_York`)     |
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `KEEPALIVE` | `1` | Keep container running (1=enabled, 0=disabled) |
+| `CAP_NET_BIND_SERVICE` | `0` | Enable binding to privileged ports (<1024) |
+| `LANG` | `C.UTF-8` | Locale setting for UTF-8 character support |
+| `UMASK` | `022` | Default file creation mask |
+| `DEBUG` | `false` | Enable debug output in entrypoint scripts |
+| `PASSWORDLESS_SUDO` | `false` | Enable passwordless sudo for user |
+| `PGID` | `0` | Primary group ID for custom user creation |
+| `PUID` | `0` | User ID for custom user creation |
+| `USER` | `root` | Username for custom user creation |
+| `WORKDIR` | `/root` | Working directory path |
+| `TZ` | - | Timezone (e.g., `Asia/Shanghai`, `America/New_York`) |
+| `WEBUI_PORT` | `8080` | Web UI listening port |
+| `PEER_PORT` | `25413` | BitTorrent peer communication port |
+| `WEBUI_USER` | - | Custom username for Web UI authentication |
+| `WEBUI_PASS` | - | Custom password for Web UI authentication |
+| `WEBUI_LANG` | `en` | Web UI display language |
+| `FLOOD_AUTH` | `none` | Authentication mode for Flood (`none` or `default`) |
+| `FLOOD_PORT` | `3000` | Flood Web UI listening port |
 
 **Debian-specific**:
 
-| Variable          | Default          | Description                      |
-| ----------------- | ---------------- | -------------------------------- |
+| Variable | Default | Description |
+|----------|---------|-------------|
 | `DEBIAN_FRONTEND` | `noninteractive` | Debian package installation mode |
-
-### Custom User Creation
-
-Create a non-root user with specific UID/GID at build time:
-
-```bash
-docker build \
-  --build-arg PUID=1000 \
-  --build-arg PGID=1000 \
-  --build-arg USER=appuser \
-  -t snowdreamtech/base:debian-custom \
-  ./docker/debian/
-```
-
-Or at runtime (requires rebuilding the image):
-
-```bash
-docker run -d \
-  --name=base \
-  -e PUID=1000 \
-  -e PGID=1000 \
-  -e USER=appuser \
-  snowdreamtech/base:debian
-```
-
-**Note**: User creation only occurs when `PUID≠0`, `PGID≠0`, and `USER≠root`.
-
-## Docker Compose Examples
-
-### Simple Configuration
-
-```yaml
-services:
-  base:
-    image: snowdreamtech/base:debian
-    container_name: base
-    environment:
-      - TZ=Asia/Shanghai
-    restart: unless-stopped
-```
-
-### Advanced Configuration
-
-```yaml
-services:
-  base:
-    image: snowdreamtech/base:debian
-    container_name: base
-    environment:
-      - TZ=Asia/Shanghai
-      - DEBUG=true
-      - KEEPALIVE=1
-    volumes:
-      - /path/to/data:/data
-    restart: unless-stopped
-```
-
-## Semantic Versioning Tags
-
-Images follow semantic versioning with the format: `{major}.{minor}.{patch}-{variant}`
-
-Examples:
-
-- `snowdreamtech/base:<version>-debian`
-- `snowdreamtech/base:<version>-alpine`
-- `snowdreamtech/base:<version>-rocky`
-
-This format allows:
-
-- **Full version pinning**: `<version>-debian` (exact version)
-- **Variant latest tag**: `latest-debian` (tracks most recent release for Debian)
-- **Global latest tag**: `latest` (tracks most recent release, defaults to Debian)
 
 ## Architecture Support
 
 Each distribution variant supports multiple CPU architectures for deployment across diverse hardware platforms:
 
-| Variant    | Architectures                                                 |
-| ---------- | ------------------------------------------------------------- |
-| **Debian** | amd64, arm32v7, arm64, ppc64le, riscv64, s390x                |
-| **Alpine** | i386, amd64, arm32v6, arm32v7, arm64, ppc64le, riscv64, s390x |
-| **Rocky**  | amd64, arm64, ppc64le, s390x                                  |
+| Variant | Architectures |
+|---------|---------------|
+| **Debian** | amd64, arm32v7, arm64, ppc64le, riscv64, s390x |
+| **Alpine** | 386, amd64, arm/v6, arm/v7, arm64, ppc64le, riscv64, s390x |
+| **Rocky** | amd64, arm64, ppc64le, s390x |
 
 Docker automatically selects the appropriate architecture for your platform when pulling images.
 
 ## Entrypoint System
 
-The base template includes a flexible entrypoint system that executes custom initialization scripts before starting your application.
+The image includes a flexible entrypoint system that executes custom initialization scripts before starting your application.
 
 ### How It Works
 
@@ -250,36 +250,12 @@ The base template includes a flexible entrypoint system that executes custom ini
 3. Each script receives the container's command-line arguments
 4. If any script fails, the container stops (fail-fast behavior)
 
-### Adding Custom Initialization
-
-Create custom initialization scripts in your derived Dockerfile:
-
-```dockerfile
-FROM snowdreamtech/base:debian
-
-# Add your custom initialization script
-COPY my-init.sh /usr/local/bin/entrypoint.d/20-my-init.sh
-RUN chmod +x /usr/local/bin/entrypoint.d/20-my-init.sh
-
-# Your application setup
-COPY app /app
-CMD ["/app/start.sh"]
-```
-
 ### Debug Mode
 
 Enable debug output to troubleshoot entrypoint execution:
 
 ```bash
-docker run -e DEBUG=true snowdreamtech/base:debian
-```
-
-Output example:
-
-```
-→ [ENTRYPOINT] Executing all scripts in /usr/local/bin/entrypoint.d
-→ Running /usr/local/bin/entrypoint.d/10-base-init.sh
-→ [ENTRYPOINT] Done.
+docker run -e DEBUG=true snowdreamtech/qbittorrent:debian
 ```
 
 ## Development
@@ -305,40 +281,14 @@ unirtm run audit
 unirtm run fix
 ```
 
-### Building Locally
-
-```bash
-# Build specific variant
-docker build -t base:debian ./docker/debian/
-docker build -t base:alpine ./docker/alpine/
-docker build -t base:rocky ./docker/rocky/
-```
-
-### Testing
-
-```bash
-# Test default configuration
-docker run --rm base:debian id
-
-# Test custom user creation
-docker build --build-arg PUID=1000 --build-arg PGID=1000 --build-arg USER=testuser -t base:debian-test ./docker/debian/
-docker run --rm base:debian-test id
-# Expected: uid=1000(testuser) gid=1000(testuser)
-
-# Test DEBUG mode
-docker run --rm -e DEBUG=true base:debian
-```
-
 ## Reference
 
-1. [使用 buildx 构建多平台 Docker 镜像](https://icloudnative.io/posts/multiarch-docker-with-buildx/)
-2. [如何使用 docker buildx 构建跨平台 Go 镜像](https://waynerv.com/posts/building-multi-architecture-images-with-docker-buildx/#buildx-%E7%9A%84%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%9E%84%E5%BB%BA%E7%AD%96%E7%95%A5)
-3. [Building Multi-Arch Images for Arm and x86 with Docker Desktop](https://www.docker.com/blog/multi-arch-images/)
-4. [How to Rapidly Build Multi-Architecture Images with Buildx](https://www.docker.com/blog/how-to-rapidly-build-multi-architecture-images-with-buildx/)
-5. [Faster Multi-Platform Builds: Dockerfile Cross-Compilation Guide](https://www.docker.com/blog/faster-multi-platform-builds-dockerfile-cross-compilation-guide/)
-6. [docker/buildx](https://github.com/docker/buildx)
+1. [qBittorrent Official Website](https://www.qbittorrent.org/)
+2. [qBittorrent Official Repository](https://github.com/qbittorrent/qBittorrent)
+3. [Flood - Modern Web UI for Torrent Clients](https://github.com/jesec/flood)
+4. [qbt_pw_gen](https://github.com/saltydk/qbt_pw_gen)
 
-## Contact (备注：base)
+## Contact (备注：qbittorrent)
 
 - Email: <sn0wdr1am@qq.com>
 - QQ: 3217680847
