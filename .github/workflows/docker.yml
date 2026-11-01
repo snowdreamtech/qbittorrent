@@ -77,7 +77,7 @@ jobs:
         include:
           - variant: alpine
             # x-release-please-start-version
-            version: "5.3.0"
+            version: "5.2.1"
             # x-release-please-end
             context: docker/alpine
             platforms: linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/riscv64,linux/s390x

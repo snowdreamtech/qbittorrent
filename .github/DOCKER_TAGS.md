@@ -8,11 +8,11 @@ All images use the format: `snowdreamtech/qbittorrent:TAG`
 
 Where `TAG` follows these patterns:
 
-- **Variant-specific tags**: `TAG-variant` (e.g., `nightly-alpine`, `5.3.0-alpine`)
+- **Variant-specific tags**: `TAG-variant` (e.g., `nightly-alpine`, `5.2.1-alpine`)
 - **Default tags** (Debian only): `TAG` (e.g., `nightly`, `latest`, `5.1.0`)
 - **Flavor tags**:
   - `qbittorrent`: Core daemon
-  - `flood`: Web UI powered by Flood (e.g., `latest-flood`, `latest-flood-alpine`, `5.3.0-flood-alpine`)
+  - `flood`: Web UI powered by Flood (e.g., `latest-flood`, `latest-flood-alpine`, `5.2.1-flood-alpine`)
 
 ## Supported Registries
 
@@ -66,14 +66,14 @@ snowdreamtech/qbittorrent:latest-rocky
 #### Alpine Release
 
 ```bash
-git tag alpine-v5.3.0
-git push origin alpine-v5.3.0
+git tag alpine-v5.2.1
+git push origin alpine-v5.2.1
 ```
 
 **Generated tags:**
 
 ```
-snowdreamtech/qbittorrent:5.3.0-alpine
+snowdreamtech/qbittorrent:5.2.1-alpine
 snowdreamtech/qbittorrent:latest-alpine
 ```
 
@@ -136,7 +136,7 @@ Tags are generated with the following priority (higher number = higher priority)
 | Priority | Type | Example Tags | Trigger |
 |----------|------|--------------|---------|
 | 1000 | Nightly | `nightly`, `nightly-alpine` | Schedule |
-| 800 | Version | `5.3.0-alpine`, `5.1.0` | Tag push |
+| 800 | Version | `5.2.1-alpine`, `5.1.0` | Tag push |
 | 600 | Branch | `dev-alpine`, `main-debian` | Branch push |
 | 200 | Latest | `latest`, `latest-alpine` | Main/Tag |
 
@@ -193,8 +193,8 @@ docker pull snowdreamtech/qbittorrent:latest-rocky
 ### Pull a specific version
 
 ```bash
-# Alpine 5.3.0
-docker pull snowdreamtech/qbittorrent:5.3.0-alpine
+# Alpine 5.2.1
+docker pull snowdreamtech/qbittorrent:5.2.1-alpine
 
 # Debian 5.1.0 (two ways)
 docker pull snowdreamtech/qbittorrent:5.1.0-debian
