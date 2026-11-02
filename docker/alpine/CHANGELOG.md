@@ -1,5 +1,24 @@
 # Changelog
 
+## [5.2.1](https://github.com/snowdreamtech/qbittorrent/compare/alpine-v5.2.1...alpine-v5.2.1) (2026-11-02)
+
+
+### 🚀 Features
+
+* align repository structure with base dev and upgrade upstream versions ([b4cebbe](https://github.com/snowdreamtech/qbittorrent/commit/b4cebbe6e4a3d25479bcdb24c97e513a97cc1309))
+* initial release of snowdreamtech base docker images powered by unirtm ([25f55c8](https://github.com/snowdreamtech/qbittorrent/commit/25f55c84e8fba977d226739e9871d61e1428fdeb))
+
+
+### 🐛 Bug Fixes
+
+* **docker:** correct qbittorrent version to 5.2.1 for alpine variant ([620c38c](https://github.com/snowdreamtech/qbittorrent/commit/620c38cba9bbd6a85e347b601c6e7bb2d799df66))
+
+
+### ♻️ Miscellaneous Chores
+
+* release main ([a2cafdc](https://github.com/snowdreamtech/qbittorrent/commit/a2cafdc012ed85559e0239e6333af767a878eff8))
+* **release:** deduplicate CHANGELOG headers ([ec1c2ef](https://github.com/snowdreamtech/qbittorrent/commit/ec1c2ef80d3e6af152487494cd1727eaf502214b))
+
 ## [5.2.1](https://github.com/snowdreamtech/qbittorrent/compare/alpine-v5.2.2...alpine-v5.2.1) (2026-11-01)
 
 
