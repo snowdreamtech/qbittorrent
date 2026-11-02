@@ -19,13 +19,6 @@
 * release main ([a2cafdc](https://github.com/snowdreamtech/qbittorrent/commit/a2cafdc012ed85559e0239e6333af767a878eff8))
 * **release:** deduplicate CHANGELOG headers ([ec1c2ef](https://github.com/snowdreamtech/qbittorrent/commit/ec1c2ef80d3e6af152487494cd1727eaf502214b))
 
-## [5.2.1](https://github.com/snowdreamtech/qbittorrent/compare/alpine-v5.2.2...alpine-v5.2.1) (2026-11-01)
-
-
-### 🚀 Features
-
-* upgrade qBittorrent to 5.2.1 and Flood to 4.16.3
-
 ## [5.2.2](https://github.com/snowdreamtech/qbittorrent/compare/alpine-v5.2.2...alpine-v5.2.2) (2026-08-13)
 
 
